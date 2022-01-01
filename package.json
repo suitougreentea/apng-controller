@@ -1,0 +1,15 @@
+{
+  "name": "apng-controller",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "suitougreentea",
+  "license": "MIT",
+  "devDependencies": {
+    "apng-js": "^1.1.1",
+    "parcel": "^2.0.1"
+  }
+}
