@@ -2,14 +2,24 @@
   "name": "apng-controller",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "source": "src/index.ts",
+  "module": "dist/apng_controller.min.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "parcel src/demo/index.html",
+    "build": "parcel build src/index.ts"
   },
   "author": "suitougreentea",
   "license": "MIT",
+  "dependencies": {
+    "apng-js": "^1.1.1"
+  },
   "devDependencies": {
-    "apng-js": "^1.1.1",
-    "parcel": "^2.0.1"
+    "parcel": "^2.8.2"
+  },
+  "targets": {
+    "module": {
+      "includeNodeModules": true,
+      "optimize": true
+    }
   }
 }

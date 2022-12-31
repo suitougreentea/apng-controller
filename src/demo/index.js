@@ -1,2 +1,2 @@
-import APNGController from ".."
-APNGController.transformAll()
+import { ApngController } from ".."
+ApngController.initialize().transformAll()

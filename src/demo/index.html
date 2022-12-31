@@ -6,11 +6,12 @@
   </head>
   <body>
     <h1>apng-controller demo</h1>
-    <p><img src="images/test-1.png"></p>
-    <p><img src="images/test-2.png"></p>
-    <p><img src="images/synctest-1.png"></p>
-    <p><img src="images/synctest-2.png"></p>
-    <p><img src="images/synctest-3.png"></p>
+    <p><img class="apng-controller-image" src="images/test-1.png"></p>
+    <p><img class="apng-controller-image" src="images/test-2.png"></p>
+    <p><img class="apng-controller-image" src="images/synctest-1.png" data-apng-controller-group="synctest"></p>
+    <p><img class="apng-controller-image" src="images/synctest-2.png" data-apng-controller-group="synctest"></p>
+    <p><img class="apng-controller-image" src="images/synctest-3.png" data-apng-controller-group="synctest"></p>
+    <div class="apng-controller-group-controller" data-apng-controller-group="synctest"></div>
     <script type="module" src="index.js"></script>
   </body>
 </html>
