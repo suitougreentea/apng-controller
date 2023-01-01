@@ -70,7 +70,7 @@ export class ApngController {
 
     const container = document.createElement("div")
     container.classList.add("apng-controller-container")
-    container.classList.add(hasGroup ? "apng-controller-container-standalone" : "apng-controller-container-image-only")
+    container.classList.add(hasGroup ? "apng-controller-container-image-only" : "apng-controller-container-standalone")
 
     const canvas = document.createElement("canvas")
     canvas.className = "apng-controller-canvas"
