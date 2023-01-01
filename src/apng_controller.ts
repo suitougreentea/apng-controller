@@ -1,4 +1,5 @@
 import parseAPNG from "apng-js"
+import { createPopper } from "@popperjs/core"
 import { ApngRenderer } from "./apng_renderer"
 import { ControllerHandle } from "./controller_handle"
 
@@ -90,7 +91,9 @@ export class ApngController {
       const handle = new ControllerHandle()
       this.controllerHandles.push(handle)
       handle.addRenderer(renderer)
-      container.appendChild(this.createControllerElement(handle))
+      const controller = this.createControllerElement(handle)
+      container.appendChild(controller)
+      this.attachController(controller, canvas)
     }
 
     element.replaceWith(container)
@@ -101,10 +104,16 @@ export class ApngController {
     controller.className = "apng-controller-controller"
 
     const playOrPause = document.createElement("button")
-    playOrPause.innerText = "\u23f8"
+    playOrPause.className = "apng-controller-controller-play"
     controller.appendChild(playOrPause)
 
+    const playOrPauseText = document.createElement("span")
+    playOrPauseText.className = "material-symbols-outlined"
+    playOrPauseText.innerText = "pause"
+    playOrPause.appendChild(playOrPauseText)
+
     const speed = document.createElement("select")
+    speed.className = "apng-controller-controller-speed"
     controller.appendChild(speed)
     ApngController.speedPresets.forEach((e, i) => {
       const option = document.createElement("option")
@@ -115,14 +124,25 @@ export class ApngController {
     })
 
     const prevFrame = document.createElement("button")
-    prevFrame.innerText = "<"
+    prevFrame.className = "apng-controller-controller-prev-frame"
     controller.appendChild(prevFrame)
 
+    const prevFrameText = document.createElement("span")
+    prevFrameText.className = "material-symbols-outlined"
+    prevFrameText.innerText = "chevron_left"
+    prevFrame.appendChild(prevFrameText)
+
     const nextFrame = document.createElement("button")
-    nextFrame.innerText = ">"
+    nextFrame.className = "apng-controller-controller-next-frame"
     controller.appendChild(nextFrame)
 
+    const nextFrameText = document.createElement("span")
+    nextFrameText.className = "material-symbols-outlined"
+    nextFrameText.innerText = "chevron_right"
+    nextFrame.appendChild(nextFrameText)
+
     const frameText = document.createElement("span")
+    frameText.className = "apng-controller-controller-frame"
     frameText.innerText = "0 / 0"
     controller.appendChild(frameText)
 
@@ -131,9 +151,46 @@ export class ApngController {
     prevFrame.onclick = _ => controllerHandle.prevFrame()
     nextFrame.onclick = _ => controllerHandle.nextFrame()
 
-    controllerHandle.eventTarget.addEventListener("onPlayingUpdated", _ => playOrPause.innerText = controllerHandle.playing ? "\u23f8" : "\u23f5")
+    controllerHandle.eventTarget.addEventListener("onPlayingUpdated", _ => playOrPauseText.innerText = controllerHandle.playing ? "pause" : "play_arrow")
     controllerHandle.eventTarget.addEventListener("onFrameNumberUpdated", _ => frameText.innerText = `${controllerHandle.frameNumber + 1} / ${controllerHandle.numFrames}`)
 
     return controller
+  }
+
+  private attachController(controller: HTMLElement, attachTo: HTMLElement) {
+    createPopper(attachTo, controller, { placement: "bottom", modifiers: [{ name: "flip", enabled: false }] })
+
+    controller.classList.add("apng-controller-controller-hidden")
+    let controllerHovered = false
+    let parentHovered = false
+    let parentTapped = false
+    const updateVisibility = () => {
+      if (controllerHovered || parentHovered || parentTapped) {
+        controller.classList.add("apng-controller-controller-shown")
+        controller.classList.remove("apng-controller-controller-hidden")
+      } else {
+        controller.classList.add("apng-controller-controller-hidden")
+        controller.classList.remove("apng-controller-controller-shown")
+      }
+    }
+
+    const outsideClickListener = (ev: MouseEvent) => {
+      const composedPath = ev.composedPath()
+      if (!composedPath.includes(controller)) {
+        parentTapped = false
+        updateVisibility()
+        document.removeEventListener("mousedown", outsideClickListener)
+      }
+    }
+    controller.onmouseenter = _ => { controllerHovered = true; updateVisibility() }
+    controller.onmouseleave = _ => { controllerHovered = false; updateVisibility() }
+    attachTo.onmouseenter = _ => { parentHovered = true; updateVisibility() }
+    attachTo.onmouseleave = _ => { parentHovered = false; updateVisibility() }
+    attachTo.onmousedown = _ => {
+      if (parentTapped) return
+      parentTapped = true
+      updateVisibility()
+      setTimeout(() => document.addEventListener("mousedown", outsideClickListener), 0)
+    }
   }
 }

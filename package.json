@@ -6,14 +6,16 @@
   "module": "dist/apng_controller.min.mjs",
   "scripts": {
     "dev": "parcel src/demo/index.html",
-    "build": "parcel build src/index.ts"
+    "build": "parcel build src/index.ts && minify src/style.css > dist/apng_controller.min.css"
   },
   "author": "suitougreentea",
   "license": "MIT",
   "dependencies": {
+    "@popperjs/core": "^2.11.6",
     "apng-js": "^1.1.1"
   },
   "devDependencies": {
+    "minify": "^9.1.0",
     "parcel": "^2.8.2"
   },
   "targets": {

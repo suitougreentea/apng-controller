@@ -1,0 +1,56 @@
+.apng-controller-controller {
+  width: 240px;
+  height: 38px;
+  background-color: #DDDDDD;
+  position: relative;
+  font-family: sans-serif;
+}
+.apng-controller-controller-hidden {
+  transition: 0.25s;
+  opacity: 0;
+  visibility: hidden;
+}
+.apng-controller-controller-shown {
+  transition: 0.25s;
+  opacity: 1;
+  visibility: visible;
+}
+.apng-controller-controller>* {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  height: 30px;
+}
+.apng-controller-controller button {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.apng-controller-controller button span {
+  font-size: 24px;
+}
+.apng-controller-controller-play {
+  left: 4px;
+}
+.apng-controller-controller-speed {
+  left: 34px;
+  width: 60px;
+  height: 30px;
+  font-size: 12px;
+}
+.apng-controller-controller-prev-frame {
+  left: 94px;
+}
+.apng-controller-controller-next-frame {
+  left: 124px;
+}
+.apng-controller-controller-frame {
+  font-size: 12px;
+  left: 154px;
+  width: 70px;
+  text-align: right;
+  line-height: 30px;
+  padding: 0px 8px;
+}
